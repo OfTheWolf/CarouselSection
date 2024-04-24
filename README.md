@@ -1,0 +1,2 @@
+# CarouselSection
+Carousel implementation with UICollectionViewCompositionalLayout
