@@ -8,9 +8,11 @@
 import UIKit
 
 final class CarouselSection {
-    private let collectionView: UICollectionView
-    private var pageControl: UIPageControl?
+    private weak var collectionView: UICollectionView?
+    private weak var pageControl: UIPageControl?
     private var scales: [IndexPath: CGFloat]
+
+    private let itemScale: CGFloat = 0.9 /// cell item width scale
 
     init(collectionView: UICollectionView) {
         self.collectionView = collectionView
@@ -29,7 +31,7 @@ final class CarouselSection {
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
         let groupSize = NSCollectionLayoutSize(
-            widthDimension: .fractionalWidth(0.9),
+            widthDimension: .fractionalWidth(itemScale),
             heightDimension: .fractionalWidth(0.5)
         )
         let group = NSCollectionLayoutGroup.vertical(
@@ -46,19 +48,19 @@ final class CarouselSection {
             guard let self else { return }
             let items = visibleItems.filter { $0.representedElementKind == nil} /// Filter supplementary views out
             let width = environment.container.effectiveContentSize.width
+            let itemWidth = width * itemScale
+            let itemOffset = (width - itemWidth) / 2
+            let xOffset = offset.x + itemOffset
             items.forEach { item in
                 let distanceFromCenter = abs((item.frame.midX - offset.x) - width / 2.0)
                 let minScale: CGFloat = 0.9
-                let maxScale: CGFloat = minScale + (1.0 - minScale) * exp(-distanceFromCenter / width)
-                let scale = max(maxScale, minScale)
+                let scale: CGFloat = minScale + (1.0 - minScale) * exp(-distanceFromCenter / (itemWidth / 2))
                 self.scales[item.indexPath] = scale
-                guard let cell = self.collectionView.cellForItem(at: item.indexPath) else { return }
-                cell.transform = CGAffineTransform(scaleX: scale, y: scale)
+                guard let cell = self.collectionView?.cellForItem(at: item.indexPath) else { return }
+                self.applyTransform(to: cell, at: item.indexPath)
             }
-//            let xfactor = offset.x / width
-//            let xfactorRounded = round(xfactor)
-//            let page = Int(max(0, xfactorRounded))
-//            pageControl?.currentPage = page
+            let currentPage = Int((xOffset / itemWidth).rounded())
+            updatePageControl(with: currentPage)
         }
         return section
     }
@@ -66,5 +68,12 @@ final class CarouselSection {
     func applyTransform(to cell: UIView, at indexPath: IndexPath) {
         guard let scale = scales[indexPath] else { return }
         cell.transform = CGAffineTransform(scaleX: scale, y: scale)
+    }
+
+    private func updatePageControl(with page: Int) {
+        let isInteracting = pageControl?.isInteracting ?? false
+        if !isInteracting {
+            pageControl?.currentPage = page
+        }
     }
 }

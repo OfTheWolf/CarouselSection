@@ -20,6 +20,7 @@
 		0C899E832BDEB536006CD8A7 /* CarouselItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C899E822BDEB536006CD8A7 /* CarouselItemCell.swift */; };
 		0C899E852BDEB715006CD8A7 /* UIColor+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C899E842BDEB715006CD8A7 /* UIColor+Random.swift */; };
 		0C899E872BDEBA11006CD8A7 /* ListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C899E862BDEBA11006CD8A7 /* ListItemCell.swift */; };
+		0CA699172BDEDCF60058F6C5 /* UIPageControl+Interacting.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CA699162BDEDCF60058F6C5 /* UIPageControl+Interacting.swift */; };
 		0CE70F002BD96AA10031C2DE /* CarouselSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE70EFF2BD96AA10031C2DE /* CarouselSection.swift */; };
 /* End PBXBuildFile section */
 
@@ -58,6 +59,7 @@
 		0C899E822BDEB536006CD8A7 /* CarouselItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselItemCell.swift; sourceTree = "<group>"; };
 		0C899E842BDEB715006CD8A7 /* UIColor+Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Random.swift"; sourceTree = "<group>"; };
 		0C899E862BDEBA11006CD8A7 /* ListItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListItemCell.swift; sourceTree = "<group>"; };
+		0CA699162BDEDCF60058F6C5 /* UIPageControl+Interacting.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIPageControl+Interacting.swift"; sourceTree = "<group>"; };
 		0CE70EFF2BD96AA10031C2DE /* CarouselSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -117,6 +119,7 @@
 				0C899E822BDEB536006CD8A7 /* CarouselItemCell.swift */,
 				0C899E862BDEBA11006CD8A7 /* ListItemCell.swift */,
 				0C899E842BDEB715006CD8A7 /* UIColor+Random.swift */,
+				0CA699162BDEDCF60058F6C5 /* UIPageControl+Interacting.swift */,
 				0C69D88D2BD8A62400875299 /* Main.storyboard */,
 				0C69D8902BD8A62500875299 /* Assets.xcassets */,
 				0C69D8922BD8A62500875299 /* LaunchScreen.storyboard */,
@@ -279,6 +282,7 @@
 				0C69D88A2BD8A62400875299 /* SceneDelegate.swift in Sources */,
 				0C899E852BDEB715006CD8A7 /* UIColor+Random.swift in Sources */,
 				0CE70F002BD96AA10031C2DE /* CarouselSection.swift in Sources */,
+				0CA699172BDEDCF60058F6C5 /* UIPageControl+Interacting.swift in Sources */,
 				0C899E832BDEB536006CD8A7 /* CarouselItemCell.swift in Sources */,
 				0C899E812BDEA958006CD8A7 /* PagerDotsView.swift in Sources */,
 			);
