@@ -7,8 +7,19 @@
 
 import UIKit
 
-struct CarouselSection {
-    let collectionView: UICollectionView
+final class CarouselSection {
+    private let collectionView: UICollectionView
+    private var pageControl: UIPageControl?
+    private var scales: [IndexPath: CGFloat]
+
+    init(collectionView: UICollectionView) {
+        self.collectionView = collectionView
+        self.scales = [:]
+    }
+
+    func hookPageControl(_ pageControl: UIPageControl?) {
+        self.pageControl = pageControl
+    }
 
     func layoutSection() -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
@@ -17,32 +28,43 @@ struct CarouselSection {
         )
         let item = NSCollectionLayoutItem(layoutSize: itemSize)
 
-        //2
         let groupSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(0.9),
             heightDimension: .fractionalWidth(0.5)
         )
-        let group = NSCollectionLayoutGroup.horizontal(
+        let group = NSCollectionLayoutGroup.vertical(
             layoutSize: groupSize,
             subitems: [item]
         )
-        //3
         let section = NSCollectionLayoutSection(group: group)
         section.orthogonalScrollingBehavior = .groupPagingCentered
-//            section.interGroupSpacing = 8
-        //4
-        section.visibleItemsInvalidationHandler = { (items, offset, environment) in
-            let width = environment.container.contentSize.width //* 0.9 - 8
+        let pagerSize = NSCollectionLayoutSize(widthDimension: .fractionalWidth(1.0), heightDimension: .absolute(24))
+        let kind = ViewController.SupplementaryItemKind.pager.rawValue
+        let pagerItem = NSCollectionLayoutBoundarySupplementaryItem(layoutSize: pagerSize, elementKind: kind, alignment: .bottom)
+        section.boundarySupplementaryItems = [pagerItem]
+        section.visibleItemsInvalidationHandler = { [weak self] (visibleItems, offset, environment) in
+            guard let self else { return }
+            let items = visibleItems.filter { $0.representedElementKind == nil} /// Filter supplementary views out
+            let width = environment.container.effectiveContentSize.width
             items.forEach { item in
                 let distanceFromCenter = abs((item.frame.midX - offset.x) - width / 2.0)
                 let minScale: CGFloat = 0.9
                 let maxScale: CGFloat = minScale + (1.0 - minScale) * exp(-distanceFromCenter / width)
                 let scale = max(maxScale, minScale)
-                let cell = collectionView.cellForItem(at: item.indexPath)
-                item.transform = CGAffineTransform(scaleX: scale, y: scale)
-                cell?.transform = CGAffineTransform(scaleX: scale, y: scale)
+                self.scales[item.indexPath] = scale
+                guard let cell = self.collectionView.cellForItem(at: item.indexPath) else { return }
+                cell.transform = CGAffineTransform(scaleX: scale, y: scale)
             }
+//            let xfactor = offset.x / width
+//            let xfactorRounded = round(xfactor)
+//            let page = Int(max(0, xfactorRounded))
+//            pageControl?.currentPage = page
         }
         return section
+    }
+
+    func applyTransform(to cell: UIView, at indexPath: IndexPath) {
+        guard let scale = scales[indexPath] else { return }
+        cell.transform = CGAffineTransform(scaleX: scale, y: scale)
     }
 }

@@ -16,6 +16,10 @@
 		0C69D89F2BD8A62600875299 /* CarouselDemoTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C69D89E2BD8A62600875299 /* CarouselDemoTests.swift */; };
 		0C69D8A92BD8A62600875299 /* CarouselDemoUITests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C69D8A82BD8A62600875299 /* CarouselDemoUITests.swift */; };
 		0C69D8AB2BD8A62600875299 /* CarouselDemoUITestsLaunchTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C69D8AA2BD8A62600875299 /* CarouselDemoUITestsLaunchTests.swift */; };
+		0C899E812BDEA958006CD8A7 /* PagerDotsView.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C899E802BDEA958006CD8A7 /* PagerDotsView.swift */; };
+		0C899E832BDEB536006CD8A7 /* CarouselItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C899E822BDEB536006CD8A7 /* CarouselItemCell.swift */; };
+		0C899E852BDEB715006CD8A7 /* UIColor+Random.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C899E842BDEB715006CD8A7 /* UIColor+Random.swift */; };
+		0C899E872BDEBA11006CD8A7 /* ListItemCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C899E862BDEBA11006CD8A7 /* ListItemCell.swift */; };
 		0CE70F002BD96AA10031C2DE /* CarouselSection.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0CE70EFF2BD96AA10031C2DE /* CarouselSection.swift */; };
 /* End PBXBuildFile section */
 
@@ -50,6 +54,10 @@
 		0C69D8A42BD8A62600875299 /* CarouselDemoUITests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = CarouselDemoUITests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C69D8A82BD8A62600875299 /* CarouselDemoUITests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselDemoUITests.swift; sourceTree = "<group>"; };
 		0C69D8AA2BD8A62600875299 /* CarouselDemoUITestsLaunchTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselDemoUITestsLaunchTests.swift; sourceTree = "<group>"; };
+		0C899E802BDEA958006CD8A7 /* PagerDotsView.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PagerDotsView.swift; sourceTree = "<group>"; };
+		0C899E822BDEB536006CD8A7 /* CarouselItemCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselItemCell.swift; sourceTree = "<group>"; };
+		0C899E842BDEB715006CD8A7 /* UIColor+Random.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Random.swift"; sourceTree = "<group>"; };
+		0C899E862BDEBA11006CD8A7 /* ListItemCell.swift */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.swift; path = ListItemCell.swift; sourceTree = "<group>"; };
 		0CE70EFF2BD96AA10031C2DE /* CarouselSection.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CarouselSection.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
@@ -105,6 +113,10 @@
 				0C69D8892BD8A62400875299 /* SceneDelegate.swift */,
 				0C69D88B2BD8A62400875299 /* ViewController.swift */,
 				0CE70EFF2BD96AA10031C2DE /* CarouselSection.swift */,
+				0C899E802BDEA958006CD8A7 /* PagerDotsView.swift */,
+				0C899E822BDEB536006CD8A7 /* CarouselItemCell.swift */,
+				0C899E862BDEBA11006CD8A7 /* ListItemCell.swift */,
+				0C899E842BDEB715006CD8A7 /* UIColor+Random.swift */,
 				0C69D88D2BD8A62400875299 /* Main.storyboard */,
 				0C69D8902BD8A62500875299 /* Assets.xcassets */,
 				0C69D8922BD8A62500875299 /* LaunchScreen.storyboard */,
@@ -261,10 +273,14 @@
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				0C899E872BDEBA11006CD8A7 /* ListItemCell.swift in Sources */,
 				0C69D88C2BD8A62400875299 /* ViewController.swift in Sources */,
 				0C69D8882BD8A62400875299 /* AppDelegate.swift in Sources */,
 				0C69D88A2BD8A62400875299 /* SceneDelegate.swift in Sources */,
+				0C899E852BDEB715006CD8A7 /* UIColor+Random.swift in Sources */,
 				0CE70F002BD96AA10031C2DE /* CarouselSection.swift in Sources */,
+				0C899E832BDEB536006CD8A7 /* CarouselItemCell.swift in Sources */,
+				0C899E812BDEA958006CD8A7 /* PagerDotsView.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
