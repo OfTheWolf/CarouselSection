@@ -16,6 +16,7 @@ class ViewController: UIViewController {
     }
 
     struct Item: Hashable {
+        let id = UUID()
         let text: String
         let color: UIColor?
 
@@ -57,7 +58,7 @@ class ViewController: UIViewController {
             layoutSection.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
             return layoutSection
         } else {
-            return self.carouselSection.layoutSection()
+            return self.carouselSection.layoutSection(for: sectionIndex, layoutEnvironment: layoutEnvironment)
         }
     }
 
@@ -72,6 +73,7 @@ class ViewController: UIViewController {
         let view = UICollectionView(frame: .zero, collectionViewLayout: layout)
         view.translatesAutoresizingMaskIntoConstraints = false
         view.delegate = self
+        view.contentInset = .init(top: 40, left: 0, bottom: 0, right: 0)
         return view
     }()
 
@@ -95,7 +97,7 @@ class ViewController: UIViewController {
                 self.didPageChange(currentPage, at: indexPath.section)
             }
             supplementaryView.configure(with: model)
-            carouselSection.hookPageControl(supplementaryView.pageControl)
+            carouselSection.setPageControl(supplementaryView.pageControl)
         }
 
         let dataSource = DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, itemIdentifier in
@@ -124,12 +126,10 @@ class ViewController: UIViewController {
 
         var snap = NSDiffableDataSourceSnapshot<Section, Item>()
         snap.appendSections([.carousel, .list])
-        let items = (0..<10).map(\.description)
-        items.enumerated().forEach { index, item in
-            snap.appendItems([
-                Item(text: item, color: .random)
-            ], toSection: .carousel)
-        }
+        var items = (0..<5).map(\.description).map{Item(text: $0, color: .random)}
+        items.insert(Item(text: "4", color: items[4].color), at: 0)
+        items.append(Item(text: "0", color: items[1].color))
+        snap.appendItems(items, toSection: .carousel)
         let others = (10..<30).map(\.description)
         others.enumerated().forEach { index, item in
             snap.appendItems([

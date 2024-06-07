@@ -19,11 +19,11 @@ final class CarouselSection {
         self.scales = [:]
     }
 
-    func hookPageControl(_ pageControl: UIPageControl?) {
+    func setPageControl(_ pageControl: UIPageControl?) {
         self.pageControl = pageControl
     }
 
-    func layoutSection() -> NSCollectionLayoutSection {
+    func layoutSection(for sectionIndex: Int, layoutEnvironment: any NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
             widthDimension: .fractionalWidth(1),
             heightDimension: .fractionalHeight(1)
@@ -59,8 +59,18 @@ final class CarouselSection {
                 guard let cell = self.collectionView?.cellForItem(at: item.indexPath) else { return }
                 self.applyTransform(to: cell, at: item.indexPath)
             }
-            let currentPage = Int((xOffset / itemWidth).rounded())
+            let nearestIndex = (xOffset / itemWidth).rounded()
+            let currentPage = Int(nearestIndex)
+            let centerOffset = abs(xOffset/itemWidth - nearestIndex)
             updatePageControl(with: currentPage)
+            if centerOffset < 0.05 {
+                let count = collectionView?.numberOfItems(inSection: sectionIndex) ?? 0
+                if currentPage == count - 1 {
+                    collectionView?.scrollToItem(at: .init(item: 1, section: sectionIndex), at: .centeredHorizontally, animated: false)
+                } else if currentPage == 0 {
+                    collectionView?.scrollToItem(at: .init(item: count - 2, section: sectionIndex), at: .centeredHorizontally, animated: false)
+                }
+            }
         }
         return section
     }
