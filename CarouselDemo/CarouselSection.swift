@@ -62,7 +62,7 @@ final class CarouselSection {
             let nearestIndex = (xOffset / itemWidth).rounded()
             let currentPage = Int(nearestIndex)
             let centerOffset = abs(xOffset/itemWidth - nearestIndex)
-            updatePageControl(with: currentPage)
+            updatePageControl(with: currentPage - 1)
             if centerOffset < 0.05 {
                 let count = collectionView?.numberOfItems(inSection: sectionIndex) ?? 0
                 if currentPage == count - 1 {

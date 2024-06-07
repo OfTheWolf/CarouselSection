@@ -91,7 +91,7 @@ class ViewController: UIViewController {
             guard let self else { return }
             guard let section = self.dataSource.sectionIdentifier(for: indexPath.section) else { return }
             let numberOfPages = self.dataSource.snapshot().numberOfItems(inSection: section)
-            let model = PagerDotsView.Model(numberOfPages: numberOfPages,
+            let model = PagerDotsView.Model(numberOfPages: numberOfPages - 2,
                                             pageIndicatorTintColor: nil,
                                             currentPageIndicatorTintColor: nil) { currentPage in
                 self.didPageChange(currentPage, at: indexPath.section)

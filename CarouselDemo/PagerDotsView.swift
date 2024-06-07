@@ -41,7 +41,7 @@ final class PagerDotsView: UICollectionReusableView {
     }
 
     @objc private func tapAction(_ sender: UIPageControl) {
-        didChangePage?(sender.currentPage)
+        didChangePage?(sender.currentPage + 1)
     }
 
     // MARK: - Public Actions
