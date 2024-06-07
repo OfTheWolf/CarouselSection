@@ -14,4 +14,4 @@ Carousel implementation with UICollectionViewCompositionalLayout
 
 
 # Demo
-![Demo](https://miro.medium.com/v2/resize:fit:1200/format:webp/1*WihuVGcO-I3qozfSQHDoog.gif)
+![Demo](https://miro.medium.com/v2/resize:fit:1200/format:webp/1*vxXHzHoML1-pmFz0nP2Sng.gif)
