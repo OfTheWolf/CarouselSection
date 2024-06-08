@@ -9,7 +9,6 @@ import UIKit
 
 final class CarouselSection {
     private weak var collectionView: UICollectionView?
-    private weak var pageControl: UIPageControl?
     private var scales: [IndexPath: CGFloat]
 
     private let itemScale: CGFloat = 0.9 /// cell item width scale
@@ -19,9 +18,7 @@ final class CarouselSection {
         self.scales = [:]
     }
 
-    func setPageControl(_ pageControl: UIPageControl?) {
-        self.pageControl = pageControl
-    }
+    var didUpdatePage: ((Int) -> Void)?
 
     func layoutSection(for sectionIndex: Int, layoutEnvironment: any NSCollectionLayoutEnvironment) -> NSCollectionLayoutSection {
         let itemSize = NSCollectionLayoutSize(
@@ -47,8 +44,9 @@ final class CarouselSection {
         section.visibleItemsInvalidationHandler = { [weak self] (visibleItems, offset, environment) in
             guard let self else { return }
             let items = visibleItems.filter { $0.representedElementKind == nil} /// Filter supplementary views out
+            guard !items.isEmpty else { return }
             let width = environment.container.effectiveContentSize.width
-            let itemWidth = width * itemScale
+            let itemWidth = items[0].frame.width
             let itemOffset = (width - itemWidth) / 2
             let xOffset = offset.x + itemOffset
             items.forEach { item in
@@ -61,15 +59,17 @@ final class CarouselSection {
             }
             let nearestIndex = (xOffset / itemWidth).rounded()
             let currentPage = Int(nearestIndex)
-            let centerOffset = abs(xOffset/itemWidth - nearestIndex)
-            updatePageControl(with: currentPage - 1)
-            if centerOffset < 0.05 {
-                let count = collectionView?.numberOfItems(inSection: sectionIndex) ?? 0
-                if currentPage == count - 1 {
-                    collectionView?.scrollToItem(at: .init(item: 1, section: sectionIndex), at: .centeredHorizontally, animated: false)
-                } else if currentPage == 0 {
-                    collectionView?.scrollToItem(at: .init(item: count - 2, section: sectionIndex), at: .centeredHorizontally, animated: false)
-                }
+            didUpdatePage?(currentPage - 1)
+            let count = collectionView?.numberOfItems(inSection: sectionIndex) ?? 0
+            guard let scrollViews = self.collectionView?.findScrollViews() else {
+                return
+            }
+            guard let scrollView = scrollViews.findScrollView(at: offset) else {
+                return }
+            if currentPage == count - 1 {
+                scrollView.contentOffset = .init(x: offset.x - itemWidth*CGFloat(count-2), y: offset.y)
+            } else if currentPage == 0 {
+                scrollView.contentOffset = .init(x: offset.x + itemWidth*CGFloat(count-2), y: offset.y)
             }
         }
         return section
@@ -78,12 +78,5 @@ final class CarouselSection {
     func applyTransform(to cell: UIView, at indexPath: IndexPath) {
         guard let scale = scales[indexPath] else { return }
         cell.transform = CGAffineTransform(scaleX: scale, y: scale)
-    }
-
-    private func updatePageControl(with page: Int) {
-        let isInteracting = pageControl?.isInteracting ?? false
-        if !isInteracting {
-            pageControl?.currentPage = page
-        }
     }
 }

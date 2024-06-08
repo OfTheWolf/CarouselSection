@@ -12,18 +12,13 @@ class ViewController: UIViewController {
 
     enum Section: Hashable {
         case list
-        case carousel
+        case carousel(Int)
     }
 
     struct Item: Hashable {
-        let id = UUID()
+        let id: Int
         let text: String
         let color: UIColor?
-
-        init(text: String, color: UIColor? = nil) {
-            self.text = text
-            self.color = color
-        }
     }
 
     enum SupplementaryItemKind: String {
@@ -44,21 +39,26 @@ class ViewController: UIViewController {
         ])
     }
 
-    private lazy var carouselSection: CarouselSection = {
-        CarouselSection(collectionView: collectionView)
-    }()
+    private var didSetInitialCarouselOffsets = false
+
+    private var carouselSections: [Section: CarouselSection] = [:]
 
     private lazy var layout: UICollectionViewLayout = UICollectionViewCompositionalLayout { [weak self] sectionIndex, layoutEnvironment in
         guard let self else { return nil }
         guard let sectionItem = self.dataSource.sectionIdentifier(for: sectionIndex) else { return nil }
-        if Section.carousel != sectionItem {
+        if Section.list == sectionItem {
             var conf = UICollectionLayoutListConfiguration.init(appearance: .plain)
             conf.backgroundColor = .clear
             var layoutSection = NSCollectionLayoutSection.list(using: conf, layoutEnvironment: layoutEnvironment)
             layoutSection.contentInsets = .init(top: 8, leading: 8, bottom: 8, trailing: 8)
             return layoutSection
         } else {
-            return self.carouselSection.layoutSection(for: sectionIndex, layoutEnvironment: layoutEnvironment)
+            let carouselSection = CarouselSection(collectionView: collectionView)
+            carouselSections[sectionItem] = carouselSection
+            carouselSection.didUpdatePage = { page in
+                self.pagerDots[sectionItem]?.update(currentPage: page)
+            }
+            return carouselSection.layoutSection(for: sectionIndex, layoutEnvironment: layoutEnvironment)
         }
     }
 
@@ -76,6 +76,8 @@ class ViewController: UIViewController {
         view.contentInset = .init(top: 40, left: 0, bottom: 0, right: 0)
         return view
     }()
+
+    private var pagerDots: [Section: PagerDotsView] = [:]
 
     private lazy var dataSource: DataSource = {
 
@@ -97,7 +99,7 @@ class ViewController: UIViewController {
                 self.didPageChange(currentPage, at: indexPath.section)
             }
             supplementaryView.configure(with: model)
-            carouselSection.setPageControl(supplementaryView.pageControl)
+            pagerDots[section] = supplementaryView
         }
 
         let dataSource = DataSource(collectionView: collectionView) { [weak self] collectionView, indexPath, itemIdentifier in
@@ -124,19 +126,59 @@ class ViewController: UIViewController {
     override func viewDidLoad() {
         super.viewDidLoad()
 
+        let refresh = UIBarButtonItem(systemItem: .refresh, primaryAction: UIAction(handler: {[unowned self] _ in
+            reloadData()
+        }))
+
+        let insert = UIBarButtonItem(systemItem: .add, primaryAction: UIAction(handler: {[unowned self] _ in
+            var snap = dataSource.snapshot()
+            snap.appendSections([.carousel(10)])
+            snap.appendItems(makeCarouselItems(from: 30, to: 40))
+            dataSource.apply(snap) { [unowned self] in
+                adjustOffsets()
+            }
+        }))
+
+        navigationItem.rightBarButtonItems = [refresh, insert]
+
+        reloadData()
+    }
+
+    private func makeCarouselItems(from start: Int, to end: Int) -> [Item] {
+        var items = (0..<(end-start)).map(\.description).enumerated().map{Item(id: $0+start, text: $1, color: nil)}
+        let count = end - start
+        let last = items[count-1]
+        let first = items[0]
+        items.insert(Item(id: end, text: last.text, color: last.color), at: 0)
+        items.append(Item(id: end+1, text: first.text, color: first.color))
+        return items
+    }
+
+    private func reloadData() {
         var snap = NSDiffableDataSourceSnapshot<Section, Item>()
-        snap.appendSections([.carousel, .list])
-        var items = (0..<5).map(\.description).map{Item(text: $0, color: .random)}
-        items.insert(Item(text: "4", color: items[4].color), at: 0)
-        items.append(Item(text: "0", color: items[1].color))
-        snap.appendItems(items, toSection: .carousel)
+        snap.appendSections([.carousel(0)])
+        snap.appendItems(makeCarouselItems(from: 0, to: 5))
+        snap.appendSections([.carousel(1)])
+        snap.appendItems(makeCarouselItems(from: 5, to: 10))
+        snap.appendSections([.carousel(2)])
+        snap.appendItems(makeCarouselItems(from: 10, to: 15))
+        snap.appendSections([.list])
         let others = (10..<30).map(\.description)
         others.enumerated().forEach { index, item in
             snap.appendItems([
-                Item(text: item)
+                Item(id: index, text: item, color: nil)
             ], toSection: .list)
         }
-        dataSource.apply(snap)
+        dataSource.apply(snap) { [unowned self] in
+            adjustOffsets()
+        }
+    }
+
+    private func adjustOffsets() {
+        carouselSections.forEach { key, carouselSection in
+            guard let index = dataSource.index(for: key) else { return }
+            self.collectionView.scrollToItem(at: .init(item: 1, section: index), at: .centeredHorizontally, animated: false)
+        }
     }
 
     private func didPageChange(_ currentPage: Int, at section: Int) {
@@ -148,6 +190,7 @@ class ViewController: UIViewController {
 
 extension ViewController: UICollectionViewDelegate {
     func collectionView(_ collectionView: UICollectionView, willDisplay cell: UICollectionViewCell, forItemAt indexPath: IndexPath) {
-        carouselSection.applyTransform(to: cell, at: indexPath)
+        guard let section = dataSource.sectionIdentifier(for: indexPath.section) else { return }
+        carouselSections[section]?.applyTransform(to: cell, at: indexPath)
     }
 }

@@ -24,7 +24,7 @@ final class PagerDotsView: UICollectionReusableView {
 
     // MARK: Internals
 
-    lazy var pageControl: UIPageControl = {
+    private lazy var pageControl: UIPageControl = {
         let view = UIPageControl()
         view.translatesAutoresizingMaskIntoConstraints = false
         return view
@@ -54,7 +54,10 @@ final class PagerDotsView: UICollectionReusableView {
     }
 
     func update(currentPage: Int) {
-        pageControl.currentPage = currentPage
+        let isInteracting = pageControl.isInteracting
+        if !isInteracting {
+            pageControl.currentPage = currentPage
+        }
     }
 
 //    MARK: - Model

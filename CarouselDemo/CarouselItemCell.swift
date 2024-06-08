@@ -39,6 +39,6 @@ final class CarouselItemCell: UICollectionViewCell {
 
     func configure(with text: String, backgroundColor: UIColor?) {
         label.text = text
-        contentView.backgroundColor = backgroundColor
+        contentView.backgroundColor = backgroundColor ?? .lightGray
     }
 }

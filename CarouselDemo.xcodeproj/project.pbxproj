@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		0C63D3F82C14BC2300A037E3 /* UICollectionView+Scroll.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C63D3F72C14BC2300A037E3 /* UICollectionView+Scroll.swift */; };
 		0C69D8882BD8A62400875299 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C69D8872BD8A62400875299 /* AppDelegate.swift */; };
 		0C69D88A2BD8A62400875299 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C69D8892BD8A62400875299 /* SceneDelegate.swift */; };
 		0C69D88C2BD8A62400875299 /* ViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 0C69D88B2BD8A62400875299 /* ViewController.swift */; };
@@ -42,6 +43,7 @@
 /* End PBXContainerItemProxy section */
 
 /* Begin PBXFileReference section */
+		0C63D3F72C14BC2300A037E3 /* UICollectionView+Scroll.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UICollectionView+Scroll.swift"; sourceTree = "<group>"; };
 		0C69D8842BD8A62400875299 /* CarouselDemo.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = CarouselDemo.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		0C69D8872BD8A62400875299 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		0C69D8892BD8A62400875299 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -120,6 +122,7 @@
 				0C899E862BDEBA11006CD8A7 /* ListItemCell.swift */,
 				0C899E842BDEB715006CD8A7 /* UIColor+Random.swift */,
 				0CA699162BDEDCF60058F6C5 /* UIPageControl+Interacting.swift */,
+				0C63D3F72C14BC2300A037E3 /* UICollectionView+Scroll.swift */,
 				0C69D88D2BD8A62400875299 /* Main.storyboard */,
 				0C69D8902BD8A62500875299 /* Assets.xcassets */,
 				0C69D8922BD8A62500875299 /* LaunchScreen.storyboard */,
@@ -281,6 +284,7 @@
 				0C69D8882BD8A62400875299 /* AppDelegate.swift in Sources */,
 				0C69D88A2BD8A62400875299 /* SceneDelegate.swift in Sources */,
 				0C899E852BDEB715006CD8A7 /* UIColor+Random.swift in Sources */,
+				0C63D3F82C14BC2300A037E3 /* UICollectionView+Scroll.swift in Sources */,
 				0CE70F002BD96AA10031C2DE /* CarouselSection.swift in Sources */,
 				0CA699172BDEDCF60058F6C5 /* UIPageControl+Interacting.swift in Sources */,
 				0C899E832BDEB536006CD8A7 /* CarouselItemCell.swift in Sources */,
